@@ -47,9 +47,6 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 
-dist
-dist/**/*
-
 /node_modules
 npm-debug.log
 /logs
