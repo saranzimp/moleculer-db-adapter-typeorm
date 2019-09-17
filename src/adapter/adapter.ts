@@ -2,6 +2,7 @@
 import {
 
     createConnection,
+    getConnectionManager,
     ConnectionOptions,
     Connection,
     EntitySchema,
@@ -87,10 +88,16 @@ export class TypeOrmDbAdapter<T> {
             entities: [this.entity],
             synchronize: true
         });
-        return connectionPromise.then((connection) => {
+        return connectionPromise.then((connection: Connection) => {
             this.connection = connection;
-            this.repository = this.connection
-                .getRepository(this.entity);
+            this.repository = this.connection.getRepository(this.entity);
+        }).catch((err) => {
+            // If AlreadyHasActiveConnectionError occurs, return already existent connection
+            if (err.name === 'AlreadyHasActiveConnectionError') {
+                this.connection = getConnectionManager().get('default');
+                return this.connection;
+            }
+            throw err;
         });
     }
 
