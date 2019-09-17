@@ -2,8 +2,8 @@
   "name": "moleculer-db-adapter-typeorm",
   "version": "0.1.4",
   "description": "typescript sql adapter using typeorm",
-  "main": "./index.js",
-  "typings": "./index.d.ts",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
   "scripts": {
     "build": "npm run clean && npm run tsc",
     "copy-types": "copyfiles -u 1 ./src/*.d.ts ./dist/compiled/src",
@@ -19,8 +19,7 @@
     "tsc": "tsc --declaration",
     "ts:watch": "tsc --watch",
     "clean": "rimraf dist coverage",
-    "local-deploy": "npm build && npm run create-package",
-    "deploy": "npm build && npm run create-package && cd ./dist/package && npm publish",
+    "deploy": "npm build && npm run create-package",
     "preversion": "npm run lint && npm run tsc && npm run test",
     "postversion": "git push && git push --follow-tags"
   },
@@ -104,5 +103,6 @@
       "json",
       "node"
     ]
-  }
+  },
+  "files": ["dist/**/*"]
 }

@@ -83,19 +83,19 @@ export class TypeOrmDbAdapter<T> {
     }
 
     public connect() {
-        const connectionPromise = createConnection({
+        return createConnection({
             ...this.opts,
             entities: [this.entity],
             synchronize: true
-        });
-        return connectionPromise.then((connection: Connection) => {
+        }).then((connection: Connection) => {
             this.connection = connection;
             this.repository = this.connection.getRepository(this.entity);
+            return Promise.resolve(connection);
         }).catch((err) => {
             // If AlreadyHasActiveConnectionError occurs, return already existent connection
             if (err.name === 'AlreadyHasActiveConnectionError') {
                 this.connection = getConnectionManager().get('default');
-                return this.connection;
+                return Promise.resolve();
             }
             throw err;
         });
