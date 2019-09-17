@@ -79,7 +79,6 @@ export class TypeOrmDbAdapter<T> {
             throw new Error('if model provided - it should a typeorm repository');
         }
         this.entity = entityFromService;
-
     }
 
     public connect() {
@@ -95,6 +94,7 @@ export class TypeOrmDbAdapter<T> {
             // If AlreadyHasActiveConnectionError occurs, return already existent connection
             if (err.name === 'AlreadyHasActiveConnectionError') {
                 this.connection = getConnectionManager().get('default');
+                this.repository = this.connection.getRepository(this.entity);
                 return Promise.resolve();
             }
             throw err;

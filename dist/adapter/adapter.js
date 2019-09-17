@@ -54,6 +54,7 @@ class TypeOrmDbAdapter {
             // If AlreadyHasActiveConnectionError occurs, return already existent connection
             if (err.name === 'AlreadyHasActiveConnectionError') {
                 this.connection = typeorm_1.getConnectionManager().get('default');
+                this.repository = this.connection.getRepository(this.entity);
                 return Promise.resolve();
             }
             throw err;
